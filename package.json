@@ -19,7 +19,8 @@
     "hubot-scripts": "^2.17.2",
     "hubot-shipit": "^0.2.1",
     "hubot-slack": "^4.5.5",
-    "mecab-async": "^0.1.2"
+    "mecab-async": "^0.1.2",
+    "mysql": "^2.16.0"
   },
   "engines": {
     "node": "0.10.x"
