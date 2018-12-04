@@ -1,5 +1,5 @@
 const config = require('config');
-const Mecab = require('./mecab');
+const Mecab = require('./modules/mecab');
 
 module.exports = (robot) => {
   const mecab = new Mecab();
