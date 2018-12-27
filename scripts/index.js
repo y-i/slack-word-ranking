@@ -11,7 +11,7 @@ const formatDate = () => {
 }
 
 module.exports = (robot) => {
-  const mecab = new Mecab();
+  const parser = new Mecab();
   const mysql = new Mysql();
   mysql.connect();
 
@@ -22,14 +22,10 @@ module.exports = (robot) => {
     }
     const text = msg.match[1];
     try {
-      const result = await mecab.parse(text);
-      const types = ['名詞', '動詞', '助動詞', '副詞', '形容詞', '形容動詞', '連体詞'];
+      const today = formatDate();
+      const result = await parser.parse(text);
 
-      types.forEach(type => {
-        result.filter(el => el[1] === type).map(el => el[0]).forEach(el => {
-          mysql.add(el, type, formatDate());
-        });
-      });
+      result.forEach(el => mysql.add(el.word, el.type, today));
     } catch (e) {
       msg.send(`Error: ${e}`);
     }
