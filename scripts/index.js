@@ -1,6 +1,7 @@
 const Cotoha = require('./modules/cotoha');
 const Mecab = require('./modules/mecab');
 const Mysql = require('./modules/mysql');
+const config = require('config');
 
 const formatDate = () => {
   const date = new Date();
@@ -17,7 +18,11 @@ module.exports = (robot) => {
   const mysql = new Mysql();
   mysql.connect();
 
+  const myname = config.get('name');
+
   robot.hear(/(.....+)/, async (msg) => {
+    // 自分宛のメンションが含まれる場合は無視
+    if (msg.message.mentions.some(mention => mention.info.name === myname)) return;
     if (msg.match.length !== 2) {
       msg.send('Invalid message format: "mecab: (.+)"');
       return;
