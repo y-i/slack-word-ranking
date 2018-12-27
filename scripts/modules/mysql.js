@@ -4,11 +4,11 @@ const mysql = require('mysql');
 class Mysql {
   constructor() {
     this._connection = mysql.createConnection({
-      host: config.get('mysql.host'),
-      port: config.get('mysql.port'),
-      user: config.get('mysql.user'),
-      password: config.get('mysql.password'),
-      database: config.get('mysql.database'),
+      host: process.env.MYSQL_HOST,
+      port: process.env.MYSQL_PORT,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DB,
     });
   }
   connect() {

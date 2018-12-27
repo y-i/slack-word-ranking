@@ -11,6 +11,7 @@ const formatDate = () => {
 }
 
 module.exports = (robot) => {
+  require('dotenv').config();
   const parser = new Mecab();
   const mysql = new Mysql();
   mysql.connect();
