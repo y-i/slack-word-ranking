@@ -1,3 +1,4 @@
+const Cotoha = require('./modules/cotoha');
 const Mecab = require('./modules/mecab');
 const Mysql = require('./modules/mysql');
 
@@ -12,7 +13,7 @@ const formatDate = () => {
 
 module.exports = (robot) => {
   require('dotenv').config();
-  const parser = new Mecab();
+  const parser = new Cotoha();
   const mysql = new Mysql();
   mysql.connect();
 
