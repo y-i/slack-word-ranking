@@ -4,8 +4,10 @@
   "private": true,
   "author": "y-i <y-i@users.noreply.github.com>",
   "description": "A simple helpful robot for your Company",
+  "main": "scripts/onRequest.js",
   "scripts": {
-    "start": "bin/hubot --adapter slack"
+    "start": "bin/hubot --adapter slack",
+    "test": "jest"
   },
   "dependencies": {
     "config": "^3.0.0",
@@ -25,9 +27,14 @@
     "hubot-slack": "^4.5.5",
     "isomorphic-fetch": "^2.2.1",
     "mecab-async": "^0.1.2",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "node-fetch": "^2.3.0"
   },
   "engines": {
     "node": "0.10.x"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "supertest": "^3.3.0"
   }
 }
