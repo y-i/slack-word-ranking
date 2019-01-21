@@ -6,7 +6,7 @@ describe('onVerify', () => {
   test('should return challenge value if type is url_verification', () => {
     const challengeMsg = "Challenge Message";
     return request
-      .get(`/slackWordRankingBot`)
+      .post(`/slackWordRankingBot`)
       .send({
         type: 'url_verification',
         challenge: challengeMsg,
