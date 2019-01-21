@@ -24,8 +24,6 @@ const onMessage = async (req, res) => {
     const today = util.formatDate();
     const results = await parser.parse(formatedText);
 
-    console.log(results);
-
     for (let result of results) {
       await mysql.add(result.word, result.type, today);
     }
