@@ -11,15 +11,18 @@ const onMessage = async (req, res) => {
     const event = req.body.event;
     const {text, user, subtype, bot_id} = event;
 
+    // リプライと絵文字を削除
+    const formatedText = text.replace(/@[^\s]+/g, '').replace(/:[a-zA-Z0-9-]+:/g, '');
+
     // 5文字以下の場合は記録しない
-    if (text.length <= 5) return res.status(200).end();
+    if (formatedText.length <= 5) return res.status(200).end();
 
     // botの発言の場合記録しない
     if (subtype === 'bot_message') return res.status(200).end();
 
     // Add to DB.
     const today = util.formatDate();
-    const results = await parser.parse(text);
+    const results = await parser.parse(formatedText);
 
     console.log(results);
 
