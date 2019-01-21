@@ -6,14 +6,21 @@ exports.formatDate = (date = new Date()) => {
   return [year, month, day].join('-');
 };
 
-exports.getUserInfo = async userID => {
-  return fetch(`https://slack.com/api/users.info?token=${process.env.SLACK_BOT_USER_TOKEN}&user=${userID}`)
-    .then(res => res.json())
-    .then(res => {
-      if (!res.ok) {
-        console.error(res);
-        return null;
-      }
-      else return res.user.real_name;
-    });
+exports.postMessage = async body => {
+  return fetch(`https://slack.com/api/chat.postMessage`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.SLACK_BOT_USER_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  }).then(res => res.json()).then(res => {
+    if (!res.ok) {
+      console.error(res);
+    }
+    return;
+  }).catch(e => {
+    console.error(e);
+    throw e;
+  });
 };
