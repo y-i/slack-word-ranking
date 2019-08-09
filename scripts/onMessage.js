@@ -9,7 +9,7 @@ const onMessage = async (req, res) => {
     mysql.connect();
 
     const event = req.body.event;
-    const {text, user, subtype, bot_id} = event;
+    const { text, user, subtype, bot_id, client_msg_id } = event;
 
     // リプライと絵文字を削除
     const formatedText = text.replace(/@[^\s]+/g, '').replace(/:[a-zA-Z0-9-]+:/g, '');
@@ -25,6 +25,7 @@ const onMessage = async (req, res) => {
     const results = await parser.parse(formatedText);
 
     for (let result of results) {
+      if (result.word.match(/^[\x21-\x7e\s]$/)) continue;
       await mysql.add(result.word, result.type, today);
     }
   } catch (e) {

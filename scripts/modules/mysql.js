@@ -19,21 +19,46 @@ class Mysql {
   connect() {
     this._connection.connect();
   }
-  add(word, type, date) {
+  _query(...args) {
     return new Promise((resolve, reject) => {
-      this._connection.query('insert into aggregation (word, type, count, day) values (?,?,1,?) ON DUPLICATE KEY UPDATE count = count + 1;', [word, type, date], (error) => {
-        if (error) reject(error);
-        resolve();
+      this._connection.query(...args, (err, res) => {
+        if (err) reject(err);
+        resolve(res);
       });
     });
   }
+  add(word, type, date) {
+    return this._query(
+      'insert into aggregation (word, type, count, day) ' +
+      'values (?,?,1,?) ON DUPLICATE KEY UPDATE count = count + 1;',
+      [word, type, date]
+    );
+  }
   fetchRanking(duration, number, date) {
-    return new Promise((resolve, reject) => {
-      this._connection.query(`select word, type, sum(count) as count from aggregation where day >= ? - interval ${duration} day group by word, type order by count desc limit ${number}`, [date], (error, results) => {
-        if (error) reject(error);
-        return resolve(results);
-      });
-    });
+    return this._query(
+      `select word, type, sum(count) as count from aggregation ` +
+      `where day between (? - interval ${duration} day) and ? ` +
+      `group by word, type order by count desc limit ${number}`,
+      [date, date]
+    );
+  }
+  fetchTrendRanking(duration, number, date) {
+    return this._query(
+      'select a.word as word, a.type as type, (a.count - coalesce(b.count,0)) as count ' +
+      `from (select word, type, sum(count) as count from aggregation where day between (? - interval ${duration} day) and ? group by word, type) as a ` +
+      `left join (select word, type, sum(count) as count from aggregation where day between (? - interval ${duration * 2} day) and (? - interval ${duration + 1} day) group by word, type) as b ` +
+      'on a.word = b.word ' +
+      'where (a.count - coalesce(b.count,0)) > 0 ' +
+      'order by (a.count - coalesce(b.count,0)) desc ' +
+      `limit ?`,
+      [
+        date,
+        date,
+        date,
+        date,
+        number,
+      ]
+    )
   }
 }
 
