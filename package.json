@@ -4,30 +4,35 @@
   "private": true,
   "author": "y-i <y-i@users.noreply.github.com>",
   "description": "A simple helpful robot for your Company",
+  "main": "scripts/onRequest.js",
   "scripts": {
-    "start": "bin/hubot --adapter slack"
+    "start": "bin/hubot --adapter slack",
+    "test": "jest",
+    "test:coverage": "npm test -- --coverage",
+    "test:badges": "npm run test:coverage  && jest-coverage-badges output \"./badges\""
+  },
+  "jest": {
+    "coverageReporters": [
+      "json-summary",
+      "text",
+      "lcov"
+    ]
   },
   "dependencies": {
     "config": "^3.0.0",
     "dotenv": "^6.2.0",
-    "hubot": "^3.1.1",
-    "hubot-diagnostics": "^1.0.0",
-    "hubot-google-images": "^0.2.7",
-    "hubot-google-translate": "^0.2.1",
-    "hubot-help": "^1.0.1",
-    "hubot-heroku-keepalive": "^1.0.3",
-    "hubot-maps": "0.0.3",
-    "hubot-pugme": "^0.1.1",
-    "hubot-redis-brain": "^1.0.0",
-    "hubot-rules": "^1.0.0",
-    "hubot-scripts": "^2.17.2",
-    "hubot-shipit": "^0.2.1",
-    "hubot-slack": "^4.5.5",
     "isomorphic-fetch": "^2.2.1",
     "mecab-async": "^0.1.2",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "node-fetch": "^2.3.0"
   },
   "engines": {
     "node": "0.10.x"
+  },
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^1.2.1",
+    "jest": "^23.6.0",
+    "jest-coverage-badges": "^1.1.2",
+    "supertest": "^3.3.0"
   }
 }
